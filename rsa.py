@@ -4,7 +4,13 @@ import argparse
 
 def main():
 
-	print('Hello World!')
+	p = 0
+	q = 0
+	n = p * q
+	totient_n = (p - 1) * (q - 1)
 
+	e = 0
+
+ 
 if __name__ == '__main__':
 	main()
