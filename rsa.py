@@ -17,11 +17,8 @@ def encrypt(plain_text='Hello World', e=7, n=221):
 	string = []
 
 	for char in plain_text:
-		# cipher_text += chr(pow(ord(char), e, n))
-		string.append(chr(pow(ord(char), e, n)))
-		
-	cipher_text.join(string)
-	print(string)
+		cipher_text += chr(pow(ord(char), e, n))
+
 	print(cipher_text)
 
 def main():
