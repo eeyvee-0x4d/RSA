@@ -7,7 +7,6 @@ import math
 
 # parses the commanline arguments
 def parse_the_args():
-	desc = "____  _____ ___ \n/ __ \/ ___//   |\n/ /_/ /\__ \/ /| |\n/ _, _/___/ / ___ |\n/_/ |_|/____/_/  |_|\n"
 
 	parser = argparse.ArgumentParser(
 		formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -54,7 +53,7 @@ Top notch military grade encryption algorithm for your super duper ultra mega se
 		print('[NOTE] No Q was provided. Will use default values.')
 	else:
 		q = args.q
-		
+
 	print('\n')
 
 	rsa_go_brrr(p, q, args.input, args.encrypt, args.decrypt)
@@ -88,8 +87,8 @@ def decrypt(cipher_text, d, n):
 	return plain_text
 
 # Use RSA algorithm
-def rsa_go_brrr(p=17, q=13, input='', encrypt_flag=False, decrypt_flag=False):
-
+def rsa_go_brrr(p=17, q=13, input_txt='', encrypt_flag=False, decrypt_flag=False):
+	
 	n = p * q
 
 	print("P: {0} Q: {1} N: {2}".format(p, q, n))
@@ -100,10 +99,12 @@ def rsa_go_brrr(p=17, q=13, input='', encrypt_flag=False, decrypt_flag=False):
 
 	e = 0
 
-	# ask user unti right input
-	while(e < 1  or e > totient_n and is_coprime(e, totient_n)):
-		print("Select e from 1 to {0}: ".format(totient_n))
-		e = int(input())
+	while True:
+		if e < 1 or e > totient_n and is_coprime(e, totient_n):
+			print("Select e from 1 to {0}: ".format(totient_n))
+			e = int(input())
+		else:
+			break
 
 	# # determine the d
 	# d = pow(e, -1, totient_n)
