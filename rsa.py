@@ -1,7 +1,63 @@
 #!/usr/bin/env python3
 
+# Author Al Vincent Musa
+# Python program that uses the RSA agorithm to encrypt or decrypt your super duper secret messagee
 import argparse
 import math
+
+# parses the commanline arguments
+def parse_the_args():
+	desc = "____  _____ ___ \n/ __ \/ ___//   |\n/ /_/ /\__ \/ /| |\n/ _, _/___/ / ___ |\n/_/ |_|/____/_/  |_|\n"
+
+	parser = argparse.ArgumentParser(
+		formatter_class=argparse.RawDescriptionHelpFormatter,
+		description='''
+    ____  _____ ___ 
+   / __ \/ ___//   |	
+  / /_/ /\__ \/ /| |	
+ / _, _/___/ / ___ |
+/_/ |_|/____/_/  |_|
+
+Top notch military grade encryption algorithm for your super duper ultra mega secret message.
+		'''
+	)
+	group = parser.add_mutually_exclusive_group()
+
+	parser.add_argument("-p", help='Set the prime number p', type=int)
+	parser.add_argument('-q', help='Set the prime number q', type=int)
+	parser.add_argument('-i', '--input', help='Input text')
+
+	group.add_argument('--encrypt', help='Use encrytion method', action='store_true')
+	group.add_argument('--decrypt', help='Use decryption method', action='store_true')
+
+	args = parser.parse_args()
+	
+	if args.p == None or args.q == None:
+		pass
+	# elif args.p < 100000000000000 or args.q < 100000000000000:
+	# 	print('[ERROR] Minimum value for p and q must be 15 digits.\n Program will exit...')
+	# 	exit()
+
+	if args.input == None:
+			print('[ERROR] Input is missing. Program will exit...')
+			exit()
+
+	p = 17 # default values
+	q = 13 # default values
+	
+	if args.p == None:
+		print('[NOTE] No P was provided. Will use default values.')
+	else:
+		p = args.p
+
+	if args.q == None:
+		print('[NOTE] No Q was provided. Will use default values.')
+	else:
+		q = args.q
+		
+	print('\n')
+
+	rsa_go_brrr(p, q, args.input, args.encrypt, args.decrypt)
 
 # check if two numbers is a coprime
 def is_coprime(e, totient_n):
@@ -10,32 +66,30 @@ def is_coprime(e, totient_n):
 		return True
 	else:
 		return False
-
-def encrypt(plain_text='Hello World', e=7, n=221):
+		
+# do the encryption
+def encrypt(plain_text, e, n):
 
 	cipher_text = ""
-	string = []
 
 	for char in plain_text:
 		cipher_text += chr(pow(ord(char), e, n))
 
 	return cipher_text
 
+# do the decryption
 def decrypt(cipher_text, d, n):
+	
+	plain_text = ''
 
- 	#decrypt here
- 	plain_text = ''
+	for char in cipher_text:
+		plain_text += chr(pow(ord(char), d, n))
 
- 	for char in cipher_text:
- 		plain_text += chr(pow(ord(char), d, n))
+	return plain_text
 
- 	return plain_text
+# Use RSA algorithm
+def rsa_go_brrr(p=17, q=13, input='', encrypt_flag=False, decrypt_flag=False):
 
-
-def main():
-
-	p = 17
-	q = 13
 	n = p * q
 
 	print("P: {0} Q: {1} N: {2}".format(p, q, n))
@@ -51,19 +105,41 @@ def main():
 		print("Select e from 1 to {0}: ".format(totient_n))
 		e = int(input())
 
-	# determine the d
-	d = pow(e, -1, totient_n)
+	# # determine the d
+	# d = pow(e, -1, totient_n)
 
-	print("Public key:\ne: {0} \nn: {1}".format(e, n))
-	print("Private key:\nd: {0} \nn: {1}".format(d, n))
+	# print("Public key:\ne: {0} \nn: {1}".format(e, n))
+	# print("Private key:\nd: {0} \nn: {1}".format(d, n))
 
-	message = "Hello World"
-	print("Message ", message)
-	cipher_text = encrypt(message, e, n)
+	# message = "Hello World"
+	# print("Message ", message)
+	# cipher_text = encrypt(message, e, n)
 	# print("Cipher: ", cipher_text)
-	# plain_text = decrypt(message, d, n)
-	# print(plain_text, d, n)
+	# plain_text = decrypt(cipher_text, d, n)
+	# print("Plain:", plain_text)
 
+def main():
+	parse_the_args()
 		
 if __name__ == '__main__':
 	main()
+
+#          ▄              ▄    
+#         ▌▒█           ▄▀▒▌   
+#         ▌▒▒█        ▄▀▒▒▒▐   
+#        ▐▄█▒▒▀▀▀▀▄▄▄▀▒▒▒▒▒▐   
+#      ▄▄▀▒▒▒▒▒▒▒▒▒▒▒█▒▒▄█▒▐   
+#    ▄▀▒▒▒░░░▒▒▒░░░▒▒▒▀██▀▒▌   
+#   ▐▒▒▒▄▄▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▀▄▒▌  
+#   ▌░░▌█▀▒▒▒▒▒▄▀█▄▒▒▒▒▒▒▒█▒▐  
+#  ▐░░░▒▒▒▒▒▒▒▒▌██▀▒▒░░░▒▒▒▀▄▌ 
+#  ▌░▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░▒▒▒▒▌ 
+# ▌▒▒▒▄██▄▒▒▒▒▒▒▒▒░░░░░░░░▒▒▒▐ 
+# ▐▒▒▐▄█▄█▌▒▒▒▒▒▒▒▒▒▒░▒░▒░▒▒▒▒▌
+# ▐▒▒▐▀▐▀▒▒▒▒▒▒▒▒▒▒▒▒▒░▒░▒░▒▒▐ 
+#  ▌▒▒▀▄▄▄▄▄▄▒▒▒▒▒▒▒▒░▒░▒░▒▒▒▌ 
+#  ▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░▒░▒▒▄▒▒▐  
+#   ▀▄▒▒▒▒▒▒▒▒▒▒▒▒▒░▒░▒▄▒▒▒▒▌  
+#     ▀▄▒▒▒▒▒▒▒▒▒▒▄▄▄▀▒▒▒▒▄▀   
+#       ▀▄▄▄▄▄▄▀▀▀▒▒▒▒▒▄▄▀     
+#          ▀▀▀▀▀▀▀▀▀▀▀▀        
