@@ -19,7 +19,18 @@ def encrypt(plain_text='Hello World', e=7, n=221):
 	for char in plain_text:
 		cipher_text += chr(pow(ord(char), e, n))
 
-	print(cipher_text)
+	return cipher_text
+
+def decrypt(cipher_text, d, n):
+
+ 	#decrypt here
+ 	plain_text = ''
+
+ 	for char in cipher_text:
+ 		plain_text += chr(pow(ord(char), d, n))
+
+ 	return plain_text
+
 
 def main():
 
@@ -46,7 +57,12 @@ def main():
 	print("Public key:\ne: {0} \nn: {1}".format(e, n))
 	print("Private key:\nd: {0} \nn: {1}".format(d, n))
 
-	encrypt('Hello World!', e, n)
+	message = "Hello World"
+	print("Message ", message)
+	cipher_text = encrypt(message, e, n)
+	# print("Cipher: ", cipher_text)
+	# plain_text = decrypt(message, d, n)
+	# print(plain_text, d, n)
 
 		
 if __name__ == '__main__':
