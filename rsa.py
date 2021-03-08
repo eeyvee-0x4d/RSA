@@ -118,17 +118,17 @@ def rsa_go_brrr(p=17, q=13, input_text='', encrypt_flag=False, decrypt_flag=Fals
 		cipher_text = encrypt(input_text, e, n)
 		print('Encrypting...')
 		print('Cipher text: {}'.format(cipher_text))
+		print('[NOTE] Some of the characters would be converted into unprintable ASCII characters. \nAs a work around the cipher text will be saved in a cipher.txt file in their escape literal form. \nUse that string as input for decryption.')
+		f = open('cipher.txt', 'w', encoding="utf-8")
+		f.write(cipher_text)
+		f.close()
 	elif decrypt_flag:
-		plain_text = decrypt(cipher_text, d, n)
+		plain_text = decrypt(input_text, d, n)
 		print('Decrypting...')
 		print('Plain text: {}'.format(plain_text))
-
-	# message = "Hello World"
-	# print("Message ", message)
-	# cipher_text = encrypt(message, e, n)
-	# print("Cipher: ", cipher_text)
-	# plain_text = decrypt(cipher_text, d, n)
-	# print("Plain:", plain_text)
+		f = open('plain.txt', 'w', encoding="utf-8")
+		f.write(plain_text)
+		f.close()
 
 def main():
 	parse_the_args()
