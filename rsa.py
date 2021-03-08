@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 # Author Al Vincent Musa
-# Python program that uses the RSA agorithm to encrypt or decrypt your super duper secret messagee
+# Python program that uses the RSA agorithm to encrypt or decrypt your super duper secret message
+
 import argparse
 import math
 
@@ -61,10 +62,7 @@ Top notch military grade encryption algorithm for your super duper ultra mega se
 # check if two numbers is a coprime
 def is_coprime(e, totient_n):
 
-	if math.gcd(e, totient_n) == 1:
-		return True
-	else:
-		return False
+	return math.gcd(e, totient_n) == 1
 		
 # do the encryption
 def encrypt(plain_text, e, n):
@@ -87,7 +85,7 @@ def decrypt(cipher_text, d, n):
 	return plain_text
 
 # Use RSA algorithm
-def rsa_go_brrr(p=17, q=13, input_txt='', encrypt_flag=False, decrypt_flag=False):
+def rsa_go_brrr(p=17, q=13, input_text='', encrypt_flag=False, decrypt_flag=False):
 	
 	n = p * q
 
@@ -100,17 +98,30 @@ def rsa_go_brrr(p=17, q=13, input_txt='', encrypt_flag=False, decrypt_flag=False
 	e = 0
 
 	while True:
-		if e < 1 or e > totient_n and is_coprime(e, totient_n):
-			print("Select e from 1 to {0}: ".format(totient_n))
-			e = int(input())
+		print("Select e from 1 to {0}: ".format(totient_n))
+		e = int(input())
+
+		if e < 1 or e > 192:
+			print("\nERROR: e must be in the range of {} and {}".format(e, totient_n))
+		elif not is_coprime(e, totient_n):
+			print("\n[ERROR] e must be a coprime with {}".format(totient_n))
 		else:
 			break
 
 	# # determine the d
-	# d = pow(e, -1, totient_n)
+	d = pow(e, -1, totient_n)
 
-	# print("Public key:\ne: {0} \nn: {1}".format(e, n))
-	# print("Private key:\nd: {0} \nn: {1}".format(d, n))
+	print("Public key:\ne: {0} \nn: {1}".format(e, n))
+	print("Private key:\nd: {0} \nn: {1}".format(d, n))
+
+	if encrypt_flag:
+		cipher_text = encrypt(input_text, e, n)
+		print('Encrypting...')
+		print('Cipher text: {}'.format(cipher_text))
+	elif decrypt_flag:
+		plain_text = decrypt(cipher_text, d, n)
+		print('Decrypting...')
+		print('Plain text: {}'.format(plain_text))
 
 	# message = "Hello World"
 	# print("Message ", message)
