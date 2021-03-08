@@ -6,71 +6,137 @@
 import argparse
 import math
 
+from math import sqrt
+from itertools import count, islice
+
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 # parses the commanline arguments
 def parse_the_args():
 
 	parser = argparse.ArgumentParser(
 		formatter_class=argparse.RawDescriptionHelpFormatter,
-		description='''
-    ____  _____ ___ 
-   / __ \/ ___//   |	
-  / /_/ /\__ \/ /| |	
- / _, _/___/ / ___ |
-/_/ |_|/____/_/  |_|
+		description=f'''
+{bcolors.WARNING}
+	         ▄              ▄    
+	        ▌▒█           ▄▀▒▌   such algorithm
+	        ▌▒▒█        ▄▀▒▒▒▐   
+	       ▐▄█▒▒▀▀▀▀▄▄▄▀▒▒▒▒▒▐   
+	     ▄▄▀▒▒▒▒▒▒▒▒▒▒▒█▒▒▄█▒▐   
+	   ▄▀▒▒▒░░░▒▒▒░░░▒▒▒▀██▀▒▌   
+	  ▐▒▒▒▄▄▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▀▄▒▌  			much wow
+	  ▌░░▌█▀▒▒▒▒▒▄▀█▄▒▒▒▒▒▒▒█▒▐  
+	 ▐░░░▒▒▒▒▒▒▒▒▌██▀▒▒░░░▒▒▒▀▄▌ 
+	 ▌░▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░▒▒▒▒▌ 
+	▌▒▒▒▄██▄▒▒▒▒▒▒▒▒░░░░░░░░▒▒▒▐ 		much secure
+	▐▒▒▐▄█▄█▌▒▒▒▒▒▒▒▒▒▒░▒░▒░▒▒▒▒▌
+	▐▒▒▐▀▐▀▒▒▒▒▒▒▒▒▒▒▒▒▒░▒░▒░▒▒▐				so python
+	 ▌▒▒▀▄▄▄▄▄▄▒▒▒▒▒▒▒▒░▒░▒░▒▒▒▌ 
+	 ▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░▒░▒▒▄▒▒▐  
+	  ▀▄▒▒▒▒▒▒▒▒▒▒▒▒▒░▒░▒▄▒▒▒▒▌  such application
+	    ▀▄▒▒▒▒▒▒▒▒▒▒▄▄▄▀▒▒▒▒▄▀   
+	      ▀▄▄▄▄▄▄▀▀▀▒▒▒▒▒▄▄▀     
+	         ▀▀▀▀▀▀▀▀▀▀▀▀      
+{bcolors.OKGREEN}    ____  ____  ________________  _____ ___ 
+{bcolors.OKCYAN}   / __ \/ __ \/ ____/ ____/ __ \/ ___//   |
+{bcolors.OKBLUE}  / / / / / / / / __/ __/ / /_/ /\__ \/ /| |
+{bcolors.HEADER} / /_/ / /_/ / /_/ / /___/ _, _/___/ / ___ |
+{bcolors.FAIL}/_____/\____/\____/_____/_/ |_|/____/_/  |_|
 
-Top notch military grade encryption algorithm for your super duper ultra mega secret message.
-		'''
+{bcolors.WARNING}Top notch military grade encryption algorithm for your super duper ultra mega secret message.{bcolors.ENDC}
+'''
 	)
-	group = parser.add_mutually_exclusive_group()
 
 	parser.add_argument("-p", help='Set the prime number p', type=int)
 	parser.add_argument('-q', help='Set the prime number q', type=int)
 	parser.add_argument('-i', '--input', help='Input text')
 
-	group.add_argument('--encrypt', help='Use encrytion method', action='store_true')
-	group.add_argument('--decrypt', help='Use decryption method', action='store_true')
-
 	args = parser.parse_args()
-	
-	if args.p == None or args.q == None:
-		pass
-	# elif args.p < 100000000000000 or args.q < 100000000000000:
-	# 	print('[ERROR] Minimum value for p and q must be 15 digits.\n Program will exit...')
-	# 	exit()
 
-	if args.input == None:
-			print('[ERROR] Input is missing. Program will exit...')
-			exit()
-
-	p = 17 # default values
-	q = 13 # default values
+	p = 1000000000100011 # default values
+	q = 1003229774283941 # default values
 	
+	# If no P argument... ask user for P
 	if args.p == None:
-		print('[NOTE] No P was provided. Will use default values.')
+		try:
+			while True:
+				user_input = int(input('Set the value of P: '))
+				p = user_input
+
+				if is_prime(p):
+					pass
+				else:
+					print(f'{bcolors.FAIL}{bcolors.BOLD}{bcolors.UNDERLINE}[ERROR]{bcolors.ENDC}{bcolors.WARNING} P must be a prime number.{bcolors.ENDC}')
+
+				if p > 100000000000000:
+					break
+				else:
+					print(f'{bcolors.FAIL}{bcolors.BOLD}{bcolors.UNDERLINE}[ERROR]{bcolors.ENDC}{bcolors.WARNING} P must be 15 digits long or more.{bcolors.ENDC}')
+
+		except:
+			print(f'{bcolors.FAIL}{bcolors.BOLD}{bcolors.UNDERLINE}[ERROR]{bcolors.ENDC}{bcolors.WARNING} Invalid input, will use default values...{bcolors.ENDC}')
 	else:
 		p = args.p
 
+	# If no Q argument... ask the user for Q
 	if args.q == None:
-		print('[NOTE] No Q was provided. Will use default values.')
+		try:
+			while True:
+				user_input = int(input('Set the value of Q: '))
+				q = user_input
+
+				if is_prime(q):
+					pass
+				else:
+					print(f'{bcolors.FAIL}{bcolors.BOLD}{bcolors.UNDERLINE}[ERROR]{bcolors.ENDC}{bcolors.WARNING} Q must be a prime number.{bcolors.ENDC}')
+
+				if q > 100000000000000:
+					break
+				else:
+					print(f'{bcolors.FAIL}{bcolors.BOLD}{bcolors.UNDERLINE}[ERROR]{bcolors.ENDC}{bcolors.WARNING} Q must be 15 digits long or more.{bcolors.ENDC}')
+
+		except:
+			print(f'{bcolors.FAIL}{bcolors.BOLD}{bcolors.UNDERLINE}[ERROR]{bcolors.ENDC}{bcolors.WARNING} Invalid input, will use default values{bcolors.ENDC}')
 	else:
 		q = args.q
 
+	input_text = ''
+
+	# If no input argument... ask the user for input
+	if args.input == None:
+		input_text = input("Enter the text to encrypt: ")
+	else:
+		input_text = args.input
+
 	print('\n')
 
-	rsa_go_brrr(p, q, args.input, args.encrypt, args.decrypt)
+	rsa_go_brrr(p, q, input_text)
 
 # check if two numbers is a coprime
 def is_coprime(e, totient_n):
 
 	return math.gcd(e, totient_n) == 1
-		
+
+def is_prime(n):
+
+    return n > 1 and all(n % i for i in islice(count(2), int(sqrt(n)-1)))
+
 # do the encryption
 def encrypt(plain_text, e, n):
 
 	cipher_text = ""
 
 	for char in plain_text:
-		cipher_text += chr(pow(ord(char), e, n))
+		cipher_text += "\\" + str(pow(ord(char), e, n))
 
 	return cipher_text
 
@@ -78,14 +144,16 @@ def encrypt(plain_text, e, n):
 def decrypt(cipher_text, d, n):
 	
 	plain_text = ''
+	cipher_chars = list(cipher_text.split('\\'))
+	cipher_chars.remove('')
 
-	for char in cipher_text:
-		plain_text += chr(pow(ord(char), d, n))
+	for char in cipher_chars:
+		plain_text += chr(pow(int(char), d, n))
 
 	return plain_text
 
 # Use RSA algorithm
-def rsa_go_brrr(p=17, q=13, input_text='', encrypt_flag=False, decrypt_flag=False):
+def rsa_go_brrr(p, q, input_text):
 	
 	n = p * q
 
@@ -101,34 +169,28 @@ def rsa_go_brrr(p=17, q=13, input_text='', encrypt_flag=False, decrypt_flag=Fals
 		print("Select e from 1 to {0}: ".format(totient_n))
 		e = int(input())
 
-		if e < 1 or e > 192:
-			print("\nERROR: e must be in the range of {} and {}".format(e, totient_n))
+		if e < 1 or e > totient_n:
+			print(f'{bcolors.FAIL}{bcolors.BOLD}{bcolors.UNDERLINE}[ERROR]{bcolors.ENDC}{bcolors.WARNING} e must be in the range of {e} and {totient_n}\n{bcolors.ENDC}')
 		elif not is_coprime(e, totient_n):
-			print("\n[ERROR] e must be a coprime with {}".format(totient_n))
+			print(f'{bcolors.FAIL}{bcolors.BOLD}{bcolors.UNDERLINE}[ERROR]{bcolors.ENDC}{bcolors.WARNING} e must be a coprime with {totient_n}\n{bcolors.ENDC}')
 		else:
 			break
 
 	# # determine the d
 	d = pow(e, -1, totient_n)
 
-	print("Public key:\ne: {0} \nn: {1}".format(e, n))
-	print("Private key:\nd: {0} \nn: {1}".format(d, n))
+	print(f"{bcolors.OKCYAN}Public key:\ne: {e} \n: {n}{bcolors.ENDC}")
+	print(f"{bcolors.OKCYAN}Private key:\nd: {d} \n: {n}{bcolors.ENDC}")
+	print(f"{bcolors.OKCYAN}Message: {input_text}{bcolors.ENDC}")
 
-	if encrypt_flag:
-		cipher_text = encrypt(input_text, e, n)
-		print('Encrypting...')
-		print('Cipher text: {}'.format(cipher_text))
-		print('[NOTE] Some of the characters would be converted into unprintable ASCII characters. \nAs a work around the cipher text will be saved in a cipher.txt file in their escape literal form. \nUse that string as input for decryption.')
-		f = open('cipher.txt', 'w', encoding="utf-8")
-		f.write(cipher_text)
-		f.close()
-	elif decrypt_flag:
-		plain_text = decrypt(input_text, d, n)
-		print('Decrypting...')
-		print('Plain text: {}'.format(plain_text))
-		f = open('plain.txt', 'w', encoding="utf-8")
-		f.write(plain_text)
-		f.close()
+	print("Encrypting message...")
+	cipher_text = encrypt(input_text, e, n)
+	cipher_string = cipher_text.strip('\\')
+	print(f"{bcolors.OKGREEN}Cipher text: {cipher_string}{bcolors.ENDC}")
+
+	print("Decrypting message...")
+	plain_text = decrypt(cipher_text, d, n)
+	print(f"{bcolors.OKGREEN}Plain text: {plain_text}{bcolors.ENDC}")
 
 def main():
 	parse_the_args()
@@ -137,7 +199,7 @@ if __name__ == '__main__':
 	main()
 
 #          ▄              ▄    
-#         ▌▒█           ▄▀▒▌   
+#         ▌▒█           ▄▀▒▌  
 #         ▌▒▒█        ▄▀▒▒▒▐   
 #        ▐▄█▒▒▀▀▀▀▄▄▄▀▒▒▒▒▒▐   
 #      ▄▄▀▒▒▒▒▒▒▒▒▒▒▒█▒▒▄█▒▐   
