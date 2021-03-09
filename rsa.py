@@ -59,11 +59,32 @@ def parse_the_args():
 	parser.add_argument("-p", help='Set the prime number p', type=int)
 	parser.add_argument('-q', help='Set the prime number q', type=int)
 	parser.add_argument('-i', '--input', help='Input text')
+	parser.add_argument('-a', '--about', help='About the program', action='store_true')
 
 	args = parser.parse_args()
 
+	if args.about:
+		about = f'''
+{bcolors.OKGREEN}    ____  ____  ________________  _____ ___ 
+{bcolors.OKCYAN}   / __ \/ __ \/ ____/ ____/ __ \/ ___//   |
+{bcolors.OKBLUE}  / / / / / / / / __/ __/ / /_/ /\__ \/ /| |
+{bcolors.HEADER} / /_/ / /_/ / /_/ / /___/ _, _/___/ / ___ |
+{bcolors.FAIL}/_____/\____/\____/_____/_/ |_|/____/_/  |_|	
+{bcolors.WARNING}
+Written on Python3 by Al Vincent Musa
+
+Credits:
+	ASCII Banner - https://www.patorjk.com/software/taag/
+	Doge ASCII art - https://dogemuchwow.com/ascii-art-doge/
+		{bcolors.ENDC}
+		'''
+		print(about)
+		exit()
+
 	p = 1000000000100011 # default values
 	q = 1003229774283941 # default values
+
+	# sample e 1478563
 	
 	# If no P argument... ask user for P
 	if args.p == None:
@@ -136,7 +157,7 @@ def encrypt(plain_text, e, n):
 	cipher_text = ""
 
 	for char in plain_text:
-		cipher_text += "\\" + str(pow(ord(char), e, n))
+		cipher_text += "/" + str(pow(ord(char), e, n))
 
 	return cipher_text
 
@@ -144,7 +165,7 @@ def encrypt(plain_text, e, n):
 def decrypt(cipher_text, d, n):
 	
 	plain_text = ''
-	cipher_chars = list(cipher_text.split('\\'))
+	cipher_chars = list(cipher_text.split('/'))
 	cipher_chars.remove('')
 
 	for char in cipher_chars:
@@ -179,13 +200,13 @@ def rsa_go_brrr(p, q, input_text):
 	# # determine the d
 	d = pow(e, -1, totient_n)
 
-	print(f"{bcolors.OKCYAN}Public key:\ne: {e} \n: {n}{bcolors.ENDC}")
-	print(f"{bcolors.OKCYAN}Private key:\nd: {d} \n: {n}{bcolors.ENDC}")
+	print(f"{bcolors.OKCYAN}Public key:\ne: {e} \nn: {n}{bcolors.ENDC}")
+	print(f"{bcolors.OKCYAN}Private key:\nd: {d} \nn: {n}{bcolors.ENDC}")
 	print(f"{bcolors.OKCYAN}Message: {input_text}{bcolors.ENDC}")
 
 	print("Encrypting message...")
 	cipher_text = encrypt(input_text, e, n)
-	cipher_string = cipher_text.strip('\\')
+	cipher_string = cipher_text.replace('/', '')
 	print(f"{bcolors.OKGREEN}Cipher text: {cipher_string}{bcolors.ENDC}")
 
 	print("Decrypting message...")
